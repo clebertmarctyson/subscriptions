@@ -11,7 +11,7 @@ const ThemeSwitcher = () => {
 
   useEffect(() => {
     setHasMounted(true);
-  });
+  }, []);
 
   if (!hasMounted) return null;
 
