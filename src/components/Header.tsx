@@ -13,12 +13,16 @@ const Header = async () => {
   }
 
   return (
-    <header className="flex items-center justify-end gap-4 p-4 border-b">
-      <ThemeSwitcher />
+    <header className="flex items-center justify-between gap-4 p-4 border-b">
+      <h1 className="text-center text-xl font-bold">SubsMGR</h1>
 
-      <UserProfile user={session.user}>
-        <UserAvatar user={session.user} />
-      </UserProfile>
+      <div className="flex items-center gap-8">
+        <ThemeSwitcher />
+
+        <UserProfile user={session.user}>
+          <UserAvatar user={session.user} />
+        </UserProfile>
+      </div>
     </header>
   );
 };

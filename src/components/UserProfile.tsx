@@ -30,6 +30,7 @@ const UserProfile = ({ children, user }: Props) => {
       <SheetTrigger>{children}</SheetTrigger>
       <SheetContent className="flex flex-col justify-between gap-4">
         <div className="flex flex-col gap-4">
+          <ThemeSwitcher />
           <SheetHeader className="flex flex-col gap-4 items-center">
             <SheetClose />
             <SheetTitle className="text-center">User Profile</SheetTitle>
@@ -49,18 +50,15 @@ const UserProfile = ({ children, user }: Props) => {
           </SheetDescription>
         </div>
         <SheetFooter>
-          <div className="w-full flex flex-col items-center gap-4">
-            <ThemeSwitcher />
-            <Button
-              className="w-full"
-              variant={"destructive"}
-              onClick={async () => {
-                await signOut();
-              }}
-            >
-              Sign Out
-            </Button>
-          </div>
+          <Button
+            className="w-full"
+            variant={"destructive"}
+            onClick={async () => {
+              await signOut();
+            }}
+          >
+            Sign Out
+          </Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>

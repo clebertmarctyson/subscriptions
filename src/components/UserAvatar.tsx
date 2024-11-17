@@ -8,8 +8,8 @@ type Props = {
 const UserAvatar = ({ user }: Props) => {
   return (
     <Avatar>
-      <AvatarImage src={user.image as string} alt={user.name as string} />
-      <AvatarFallback>{user.name}</AvatarFallback>
+      <AvatarImage src={user?.image as string} alt={user?.name as string} />
+      <AvatarFallback>{user?.name}</AvatarFallback>
     </Avatar>
   );
 };
