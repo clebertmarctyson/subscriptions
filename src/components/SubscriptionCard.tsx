@@ -29,7 +29,11 @@ const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
   const { removeSubscription } = useSubscriptionStore();
 
   return (
-    <Card className="backdrop-blur-sm flex flex-col transition-all duration-300 hover:shadow-lg">
+    <Card
+      className={`backdrop-blur-sm flex flex-col transition-all duration-300 hover:shadow-lg ${
+        subscription?.status === "ACTIVE" && "border-l-2 border-green-500"
+      }`}
+    >
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-xl font-bold">
