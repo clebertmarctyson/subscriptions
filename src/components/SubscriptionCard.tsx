@@ -1,6 +1,6 @@
 "use client";
 
-import { format } from "date-fns";
+import { formatISO } from "date-fns";
 
 import {
   Card,
@@ -52,10 +52,7 @@ const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
       <CardContent className="flex-grow space-y-2">
         <div className="flex items-center text-sm">
           <CalendarIcon className="mr-2 h-4 w-4" />
-          Next payment:{" "}
-          {subscription.paymentDate
-            ? format(new Date(subscription.paymentDate), "MM/dd/yyyy")
-            : format(new Date(), "MM/dd/yyyy")}
+          Next payment: {subscription.paymentDate.split("T")[0]}
         </div>
         <div className="flex items-center text-sm">
           <CreditCardIcon className="mr-2 h-4 w-4" />

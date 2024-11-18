@@ -23,10 +23,15 @@ const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
     set({ isLoading: true });
     try {
       const response = await fetch("/api/subscriptions");
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to fetch subscriptions");
+      }
       const data = await response.json();
       set({ subscriptions: data });
     } catch (error) {
       console.error("Error fetching subscriptions:", error);
+      throw error;
     } finally {
       set({ isLoading: false });
     }
@@ -38,11 +43,11 @@ const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
 
   addSubscription: async (subscription) => {
     try {
-      // Convert the date string to ISO format
       const formattedSubscription = {
         ...subscription,
-        paymentDate: new Date(subscription.paymentDate).toISOString(),
-        // Ensure price is a number
+        paymentDate: subscription.paymentDate
+          ? new Date(subscription.paymentDate)
+          : new Date(),
         price: Number(subscription.price),
       };
 
@@ -54,7 +59,7 @@ const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Failed to add subscription");
+        throw new Error(error.error || "Failed to add subscription");
       }
 
       const newSubscription = await response.json();
@@ -69,10 +74,11 @@ const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
 
   updateSubscription: async (subscription) => {
     try {
-      // Convert the date string to ISO format
       const formattedSubscription = {
         ...subscription,
-        paymentDate: new Date(subscription.paymentDate).toISOString(),
+        paymentDate: subscription.paymentDate
+          ? new Date(subscription.paymentDate)
+          : new Date().toLocaleDateString("en-CA"),
         price: Number(subscription.price),
       };
 
@@ -84,7 +90,7 @@ const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Failed to update subscription");
+        throw new Error(error.error || "Failed to update subscription");
       }
 
       const updatedSubscription = await response.json();
@@ -93,6 +99,8 @@ const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
           sub.id === subscription.id ? updatedSubscription : sub
         ),
       }));
+
+      return updatedSubscription;
     } catch (error) {
       console.error("Error updating subscription:", error);
       throw error;
@@ -107,7 +115,7 @@ const useSubscriptionStore = create<SubscriptionStore>((set, get) => ({
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Failed to delete subscription");
+        throw new Error(error.error || "Failed to delete subscription");
       }
 
       set((state) => ({

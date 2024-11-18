@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
+import { Subscription } from "@prisma/client";
 
 export async function GET() {
   try {
@@ -40,17 +41,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const data = await req.json();
+    const data: Subscription = await req.json();
 
-    // Ensure paymentDate is a valid Date object
     const subscription = await prisma.subscription.create({
       data: {
         name: data.name,
         price: Number(data.price),
-        paymentDate: new Date(data.paymentDate),
+        paymentDate: data.paymentDate,
         status: data.status,
-        description: data.description || null,
-        logo: data.logo || null,
+        cancelUrl: data.cancelUrl,
         userId: user.id,
       },
     });
